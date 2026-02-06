@@ -5,13 +5,44 @@ DROP DATABASE IF EXISTS book_store;
 CREATE DATABASE book_store CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE book_store;
 -- ===============================
+CREATE TABLE permissions (name VARCHAR(50) PRIMARY KEY) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
+INSERT INTO permissions (name)
+VALUES ('READ_BOOK'),
+    ('WRITE_BOOK'),
+    ('DELETE_BOOK'),
+    ('READ_USER'),
+    ('WRITE_USER'),
+    ('DELETE_USER'),
+    ('READ_ORDER'),
+    ('WRITE_ORDER'),
+    ('DELETE_ORDER');
 CREATE TABLE roles (
-    role_id INT AUTO_INCREMENT PRIMARY KEY,
-    role_name VARCHAR(50) NOT NULL UNIQUE
+    name VARCHAR(50) PRIMARY KEY,
+    description VARCHAR(255)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
-INSERT INTO roles (role_name)
-VALUES ('ROLE_ADMIN'),
-    ('ROLE_CUSTOMER');
+INSERT INTO roles (name, description)
+VALUES ('ROLE_ADMIN', 'Administrator role'),
+    ('ROLE_USER', 'User role');
+CREATE TABLE role_permissions (
+    role_name VARCHAR(50) NOT NULL,
+    permission_name VARCHAR(50) NOT NULL,
+    PRIMARY KEY (role_name, permission_name),
+    FOREIGN KEY (role_name) REFERENCES roles(name) ON DELETE CASCADE,
+    FOREIGN KEY (permission_name) REFERENCES permissions(name) ON DELETE CASCADE
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
+INSERT INTO role_permissions (role_name, permission_name)
+VALUES ('ROLE_ADMIN', 'READ_BOOK'),
+    ('ROLE_ADMIN', 'WRITE_BOOK'),
+    ('ROLE_ADMIN', 'DELETE_BOOK'),
+    ('ROLE_ADMIN', 'READ_USER'),
+    ('ROLE_ADMIN', 'WRITE_USER'),
+    ('ROLE_ADMIN', 'DELETE_USER'),
+    ('ROLE_ADMIN', 'READ_ORDER'),
+    ('ROLE_ADMIN', 'WRITE_ORDER'),
+    ('ROLE_ADMIN', 'DELETE_ORDER'),
+    ('ROLE_USER', 'READ_BOOK'),
+    ('ROLE_USER', 'READ_ORDER'),
+    ('ROLE_USER', 'WRITE_ORDER');
 CREATE TABLE users (
     user_id BIGINT AUTO_INCREMENT PRIMARY KEY,
     email VARCHAR(100) NOT NULL UNIQUE,
@@ -19,9 +50,16 @@ CREATE TABLE users (
     full_name VARCHAR(100),
     image_url VARCHAR(255),
     address VARCHAR(255),
-    phone VARCHAR(20) NULL,
-    role_id INT NOT NULL,
-    CONSTRAINT fk_users_role FOREIGN KEY (role_id) REFERENCES roles(role_id)
+    phone VARCHAR(20),
+    dob DATE,
+    CONSTRAINT chk_email_format CHECK (email LIKE '%@%')
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
+CREATE TABLE user_roles (
+    user_id BIGINT NOT NULL,
+    role_name VARCHAR(50) NOT NULL,
+    PRIMARY KEY (user_id, role_name),
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (role_name) REFERENCES roles(name) ON DELETE CASCADE
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
 CREATE TABLE authors (
     author_id BIGINT AUTO_INCREMENT PRIMARY KEY,

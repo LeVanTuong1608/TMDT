@@ -3,20 +3,23 @@ package com.example.myapp.util;
 import java.math.BigDecimal;
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
 import com.example.myapp.entity.Cart;
 import com.example.myapp.entity.CartItem;
 import com.example.myapp.model.response.CartItemResponse;
 import com.example.myapp.model.response.CartResponse;
 
+@Component
 public class CartMapper {
 
-        private CartMapper() {
-        }
+        // private CartMapper() {
+        // }
 
-        public static CartResponse toResponse(Cart cart, List<CartItem> cartItems) {
+        public CartResponse toResponse(Cart cart, List<CartItem> cartItems) {
 
                 List<CartItemResponse> items = cartItems.stream()
-                                .map(CartMapper::toItemResponse)
+                                .map(this::toItemResponse)
                                 .toList();
 
                 BigDecimal totalAmount = items.stream()
@@ -31,7 +34,7 @@ public class CartMapper {
                                 .build();
         }
 
-        public static CartItemResponse toItemResponse(CartItem item) {
+        public CartItemResponse toItemResponse(CartItem item) {
 
                 BigDecimal totalPrice = item.getPrice()
                                 .multiply(BigDecimal.valueOf(item.getQuantity()));

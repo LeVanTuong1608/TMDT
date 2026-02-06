@@ -1,6 +1,5 @@
 package com.example.myapp.service;
 
-
 import com.example.myapp.model.response.BookResponse;
 import com.example.myapp.model.response.PageResponse;
 
@@ -11,4 +10,7 @@ public interface BookService {
     PageResponse<BookResponse> getBooksByCategory(Long categoryId, int page, int size);
 
     PageResponse<BookResponse> getBooksByAuthor(Long authorId, int page, int size);
+
+    PageResponse<BookResponse> searchBooks(String keyword, int page, int size);
+
 }

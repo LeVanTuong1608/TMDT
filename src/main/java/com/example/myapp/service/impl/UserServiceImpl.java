@@ -10,8 +10,8 @@ import com.example.myapp.entity.User;
 import com.example.myapp.exception.InvalidPasswordException;
 import com.example.myapp.exception.UserNotFoundException;
 import com.example.myapp.model.request.UpdateUserRequest;
-import com.example.myapp.model.response.UserProfileResponse;
-import com.example.myapp.repository.UserRepository;
+import com.example.myapp.model.response.UserResponse;
+import com.example.myapp.repository.UserfrofileRepository;
 import com.example.myapp.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -20,17 +20,17 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository userRepository;
+    private final UserfrofileRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public UserProfileResponse getMyProfile() {
+    public UserResponse getMyProfile() {
         User user = getCurrentUser();
         return mapToResponse(user);
     }
 
     @Override
-    public UserProfileResponse updateMyProfile(UpdateUserRequest request) {
+    public UserResponse updateMyProfile(UpdateUserRequest request) {
 
         User user = getCurrentUser();
 
@@ -66,8 +66,8 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(UserNotFoundException::new);
     }
 
-    private UserProfileResponse mapToResponse(User user) {
-        return UserProfileResponse.builder()
+    private UserResponse mapToResponse(User user) {
+        return UserResponse.builder()
                 .email(user.getEmail())
                 .fullName(user.getFullName())
                 .address(user.getAddress())

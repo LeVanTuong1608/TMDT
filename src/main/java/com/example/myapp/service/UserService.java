@@ -1,11 +1,11 @@
 package com.example.myapp.service;
 
 import com.example.myapp.model.request.UpdateUserRequest;
-import com.example.myapp.model.response.UserProfileResponse;
+import com.example.myapp.model.response.UserResponse;
 
 public interface UserService {
 
-    UserProfileResponse getMyProfile();
+    UserResponse getMyProfile();
 
-    UserProfileResponse updateMyProfile(UpdateUserRequest request);
+    UserResponse updateMyProfile(UpdateUserRequest request);
 }

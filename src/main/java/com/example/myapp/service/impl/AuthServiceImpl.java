@@ -28,7 +28,7 @@ import com.example.myapp.model.response.RefreshTokenResponse;
 import com.example.myapp.repository.PasswordResetTokenRepository;
 import com.example.myapp.repository.RefreshTokenRepository;
 import com.example.myapp.repository.RoleRepository;
-import com.example.myapp.repository.UserRepository;
+import com.example.myapp.repository.UserfrofileRepository;
 import com.example.myapp.security.JwtService;
 import com.example.myapp.service.AuthService;
 import com.example.myapp.service.EmailService;
@@ -41,7 +41,7 @@ import lombok.experimental.FieldDefaults;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AuthServiceImpl implements AuthService {
-        final UserRepository userRepository;
+        final UserfrofileRepository userRepository;
         final RefreshTokenRepository refreshTokenRepository;
         final PasswordEncoder passwordEncoder;
         final JwtService jwtService;

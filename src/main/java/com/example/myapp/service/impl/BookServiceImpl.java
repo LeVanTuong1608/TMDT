@@ -12,7 +12,9 @@ import com.example.myapp.model.response.BookResponse;
 import com.example.myapp.model.response.PageResponse;
 import com.example.myapp.repository.*;
 import com.example.myapp.service.*;
-import com.example.myapp.util.PageMapper;
+import com.example.myapp.util.*;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -56,6 +58,20 @@ public class BookServiceImpl implements BookService {
         Pageable pageable = PageRequest.of(page, size);
         Page<Book> bookPage = bookRepository.findByAuthor_Id(authorId, pageable);
         return PageMapper.toBookPageResponse(bookPage);
+    }
+
+    @Override
+    public PageResponse<BookResponse> searchBooks(String keyword, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Book> bookPage = bookRepository.findByTitleContaining(keyword, pageable);
+        return PageMapper.toBookPageResponse(bookPage);
+    }
+
+    @Override
+    public BookResponse getDetail(Long id) {
+        Book book = bookRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.BOOK_NOT_FOUND));
+        return BookMapper.toResponse(book);
     }
 
     /* ================== MAPPER ================== */

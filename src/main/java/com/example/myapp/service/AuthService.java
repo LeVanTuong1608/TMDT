@@ -1,5 +1,7 @@
 package com.example.myapp.service;
 
+import org.hibernate.annotations.Comments;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import com.example.myapp.model.request.ForgotPasswordRequest;
@@ -13,7 +15,6 @@ import com.example.myapp.model.request.ResetPasswordRequest;
 import com.example.myapp.model.response.LoginResponse;
 import com.example.myapp.model.response.RefreshTokenResponse;
 
-@Service
 public interface AuthService {
     LoginResponse login(LoginRequest request);
 

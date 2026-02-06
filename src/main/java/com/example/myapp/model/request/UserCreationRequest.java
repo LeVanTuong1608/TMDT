@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
+import java.util.Set;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -30,6 +32,8 @@ public class UserCreationRequest {
     String phone;
 
     String address;
+
+    Set<String> roleNames;
 
     // getter & setter
 }

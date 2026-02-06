@@ -1,21 +1,21 @@
 package com.example.myapp.util;
 
+import org.springframework.stereotype.Component;
+
 import com.example.myapp.entity.Book;
 import com.example.myapp.model.response.BookResponse;
 
+@Component
 public class BookMapper {
 
-    private BookMapper() {
-        // utility class
-    }
+    // private BookMapper() {
+    // // utility class
+    // }
 
-    public static BookResponse toResponse(Book book) {
-
-        if (book == null) {
-            return null;
-        }
+    public BookResponse toResponse(Book book) {
 
         return BookResponse.builder()
+                // .bookId(book.getId())
                 .id(book.getId())
                 .title(book.getTitle())
                 .imageUrl(book.getImageUrl())
@@ -26,10 +26,10 @@ public class BookMapper {
                 .dimensions(book.getDimensions())
 
                 // flatten object
-                .categoryId(book.getCategory().getId())
+                // .categoryId(book.getCategory().getId())
                 .categoryName(book.getCategory().getCategoryName())
 
-                .authorId(book.getAuthor().getId())
+                // .authorId(book.getAuthor().getId())
                 .authorName(book.getAuthor().getAuthorName())
                 .build();
     }

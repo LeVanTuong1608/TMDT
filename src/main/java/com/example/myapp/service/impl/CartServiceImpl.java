@@ -104,87 +104,85 @@ import com.example.myapp.service.*;
 import com.example.myapp.util.CartMapper;
 
 @Service
-@Transactional
 public class CartServiceImpl implements CartService {
 
-    private final CartRepository cartRepository;
-    private final CartItemRepository cartItemRepository;
-    private final BookRepository bookRepository;
-    private final CartMapper cartMapper;
+        private final CartRepository cartRepository;
+        private final CartItemRepository cartItemRepository;
+        private final BookRepository bookRepository;
+        private final CartMapper cartMapper;
 
-    public CartServiceImpl(
-            CartRepository cartRepository,
-            CartItemRepository cartItemRepository,
-            BookRepository bookRepository,
-            CartMapper cartMapper) {
+        public CartServiceImpl(
+                        CartRepository cartRepository,
+                        CartItemRepository cartItemRepository,
+                        BookRepository bookRepository,
+                        CartMapper cartMapper) {
 
-        this.cartRepository = cartRepository;
-        this.cartItemRepository = cartItemRepository;
-        this.bookRepository = bookRepository;
-        this.cartMapper = cartMapper;
-    }
-
-    /* ================== ADD TO CART ================== */
-
-    @Override
-    public void addToCart(Long bookId, int quantity) {
-
-        if (quantity <= 0) {
-            throw new AppException(ErrorCode.INVALID_QUANTITY);
+                this.cartRepository = cartRepository;
+                this.cartItemRepository = cartItemRepository;
+                this.bookRepository = bookRepository;
+                this.cartMapper = cartMapper;
         }
 
-        User user = SecurityUtil.getCurrentUser();
+        /* ================== ADD TO CART ================== */
 
-        Cart cart = cartRepository.findByUserAndStatus(user, "active")
-                .orElseGet(() -> cartRepository.save(
-                        new Cart(null, user, "active", LocalDateTime.now())));
+        @Override
+        public void addToCart(Long bookId, int quantity) {
 
-        Book book = bookRepository.findById(bookId)
-                .orElseThrow(() -> new AppException(ErrorCode.BOOK_NOT_FOUND));
+                if (quantity <= 0) {
+                        throw new AppException(ErrorCode.INVALID_QUANTITY);
+                }
 
-        CartItem cartItem = cartItemRepository.findByCartAndBook(cart, book)
-                .orElseGet(() -> new CartItem(
-                        null,
-                        cart,
-                        book,
-                        0,
-                        book.getPrice()));
+                User user = SecurityUtil.getCurrentUser();
 
-        cartItem.setQuantity(cartItem.getQuantity() + quantity);
-        cartItemRepository.save(cartItem);
-    }
+                Cart cart = cartRepository.findByUserAndStatus(user, "active")
+                                .orElseGet(() -> cartRepository.save(
+                                                new Cart(null, user, "active", LocalDateTime.now())));
 
-    /* ================== REMOVE ITEM ================== */
+                Book book = bookRepository.findById(bookId)
+                                .orElseThrow(() -> new AppException(ErrorCode.BOOK_NOT_FOUND));
 
-    @Override
-    public void removeFromCart(Long bookId) {
+                CartItem cartItem = cartItemRepository.findByCartAndBook(cart, book)
+                                .orElseGet(() -> new CartItem(
+                                                null,
+                                                cart,
+                                                book,
+                                                0,
+                                                book.getPrice()));
 
-        User user = SecurityUtil.getCurrentUser();
+                cartItem.setQuantity(cartItem.getQuantity() + quantity);
+                cartItemRepository.save(cartItem);
+        }
 
-        Cart cart = cartRepository.findByUserAndStatus(user, "active")
-                .orElseThrow(() -> new AppException(ErrorCode.CART_NOT_FOUND));
+        /* ================== REMOVE ITEM ================== */
 
-        Book book = bookRepository.findById(bookId)
-                .orElseThrow(() -> new AppException(ErrorCode.BOOK_NOT_FOUND));
+        @Override
+        public void removeFromCart(Long bookId) {
 
-        CartItem item = cartItemRepository.findByCartAndBook(cart, book)
-                .orElseThrow(() -> new AppException(ErrorCode.CART_ITEM_NOT_FOUND));
+                User user = SecurityUtil.getCurrentUser();
 
-        cartItemRepository.delete(item);
-    }
+                Cart cart = cartRepository.findByUserAndStatus(user, "active")
+                                .orElseThrow(() -> new AppException(ErrorCode.CART_NOT_FOUND));
 
-    /* ================== VIEW CART ================== */
+                Book book = bookRepository.findById(bookId)
+                                .orElseThrow(() -> new AppException(ErrorCode.BOOK_NOT_FOUND));
 
-    @Override
-    public CartResponse getMyCart() {
+                CartItem item = cartItemRepository.findByCartAndBook(cart, book)
+                                .orElseThrow(() -> new AppException(ErrorCode.CART_ITEM_NOT_FOUND));
 
-        User user = SecurityUtil.getCurrentUser();
+                cartItemRepository.delete(item);
+        }
 
-        Cart cart = cartRepository.findByUserAndStatus(user, "active")
-                .orElseThrow(() -> new AppException(ErrorCode.CART_NOT_FOUND));
+        /* ================== VIEW CART ================== */
 
-        List<CartItem> cartItems = cartItemRepository.findByCart(cart);
+        @Override
+        public CartResponse getMyCart() {
 
-        return cartMapper.toResponse(cart, cartItems);
-    }
+                User user = SecurityUtil.getCurrentUser();
+
+                Cart cart = cartRepository.findByUserAndStatus(user, "active")
+                                .orElseThrow(() -> new AppException(ErrorCode.CART_NOT_FOUND));
+
+                List<CartItem> cartItems = cartItemRepository.findByCart(cart);
+                return cartMapper.toResponse(cart, cartItems);
+        }
 }

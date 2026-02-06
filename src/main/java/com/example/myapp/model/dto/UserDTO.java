@@ -1,10 +1,15 @@
 package com.example.myapp.model.dto;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
+import java.util.Set;
+
 @Getter
 @Setter
+@Builder
 public class UserDTO {
 
     private Long id;
@@ -13,7 +18,6 @@ public class UserDTO {
     private String imageUrl;
     private String address;
     private String phone;
-
-    // QUAN TRỌNG
-    private String role; // VD: "ROLE_USER", "ROLE_ADMIN"
+    private LocalDate dob;
+    private Set<String> roles;
 }

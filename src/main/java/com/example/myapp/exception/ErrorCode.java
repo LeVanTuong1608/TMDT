@@ -41,7 +41,15 @@ public enum ErrorCode {
 
     // PERMISSION
     UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "Unauthorized"),
-    FORBIDDEN(HttpStatus.FORBIDDEN, "Access denied");
+    FORBIDDEN(HttpStatus.FORBIDDEN, "Access denied"),
+
+    // COMMENT
+    COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "Comment not found"),
+
+    ACTIVE_CART_NOT_FOUND(HttpStatus.NOT_FOUND, "Active cart not found"),
+
+    // ORRDER
+    ORDER_NOT_FOUND(HttpStatus.NOT_FOUND, "Order not found");
 
     private final HttpStatus status;
     private final String message;

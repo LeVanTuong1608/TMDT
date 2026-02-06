@@ -18,4 +18,9 @@ public class SecurityUtil {
         // throw new RuntimeException("User not authenticated");
         throw new UserNotFoundException();
     }
+
+    public static String getCurrentUserLogin() {
+        User user = getCurrentUser();
+        return user.getEmail();
+    }
 }

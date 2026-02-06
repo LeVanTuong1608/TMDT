@@ -4,6 +4,7 @@ import com.example.myapp.model.request.BookRequest;
 import com.example.myapp.model.response.*;
 
 public interface AdminBookService {
+    PageResponse<BookResponse> getBooks(int page, int size);
 
     BookResponse createBook(BookRequest request);
 
@@ -12,4 +13,6 @@ public interface AdminBookService {
     void deleteBook(Long id);
 
     PageResponse<BookResponse> searchBooks(String keyword, int page, int size);
+
+    BookResponse getDetail(Long id);
 }
