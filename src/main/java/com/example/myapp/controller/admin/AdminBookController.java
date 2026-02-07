@@ -56,16 +56,21 @@ import com.example.myapp.model.response.BookResponse;
 import com.example.myapp.model.response.PageResponse;
 import com.example.myapp.service.AdminBookService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/admin/books")
 @PreAuthorize("hasRole('ADMIN')")
+@Tag(name = "Admin - Book")
+@Validated
 public class AdminBookController {
 
     private final AdminBookService adminBookService;
@@ -76,7 +81,8 @@ public class AdminBookController {
 
     // ================= CREATE =================
     @PostMapping
-    public ResponseEntity<BookResponse> create(
+    @Operation(summary = "Create new book")
+    public ResponseEntity<BookResponse> createBook(
             @Valid @RequestBody BookRequest request) {
 
         BookResponse response = adminBookService.createBook(request);
@@ -85,7 +91,8 @@ public class AdminBookController {
 
     // ================= UPDATE =================
     @PutMapping("/{id}")
-    public ResponseEntity<BookResponse> update(
+    @Operation(summary = "Update book")
+    public ResponseEntity<BookResponse> updateBook(
             @PathVariable Long id,
             @Valid @RequestBody BookRequest request) {
 
@@ -95,6 +102,7 @@ public class AdminBookController {
 
     // ================= DELETE =================
     @DeleteMapping("/{id}")
+    @Operation(summary = "Delete book")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         adminBookService.deleteBook(id);
         return ResponseEntity.noContent().build();
@@ -102,6 +110,7 @@ public class AdminBookController {
 
     // ================= DETAIL =================
     @GetMapping("/{id}")
+    @Operation(summary = "Get detail of book")
     public ResponseEntity<BookResponse> getDetail(@PathVariable Long id) {
         BookResponse response = adminBookService.getDetail(id);
         return ResponseEntity.ok(response);

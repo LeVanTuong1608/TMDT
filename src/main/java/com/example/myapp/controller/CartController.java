@@ -59,6 +59,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/cart")
 @RequiredArgsConstructor
 @PreAuthorize("hasRole('USER')")
+
 public class CartController {
 
     private final CartService cartService;
@@ -89,5 +90,32 @@ public class CartController {
     @GetMapping
     public ResponseEntity<CartResponse> getMyCart() {
         return ResponseEntity.ok(cartService.getMyCart());
+    }
+
+    /* ================== UPDATE QUANTITY ================== */
+    // PUT /api/cart/update?bookId=1&quantity=2
+    @PutMapping("/update")
+    public ResponseEntity<Void> updateQuantity(
+            @RequestParam Long bookId,
+            @RequestParam int quantity) {
+
+        cartService.updateQuantity(bookId, quantity);
+        return ResponseEntity.ok().build();
+    }
+
+    /* ================== CLEAR CART ================== */
+    // DELETE /api/cart/clear
+    @DeleteMapping("/clear")
+    public ResponseEntity<Void> clearCart() {
+        cartService.clearCart();
+        return ResponseEntity.ok().build();
+    }
+
+    /* ================== CHECKOUT ================== */
+    // POST /api/cart/checkout
+    @PostMapping("/checkout")
+    public ResponseEntity<Void> checkout() {
+        cartService.checkout();
+        return ResponseEntity.ok().build();
     }
 }

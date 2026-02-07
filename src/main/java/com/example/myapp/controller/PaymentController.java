@@ -4,9 +4,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import com.example.myapp.model.request.CreatePaymentRequest;
 import com.example.myapp.model.response.PaymentResponse;
 import com.example.myapp.service.PaymentService;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
@@ -19,15 +22,20 @@ public class PaymentController {
 
     private final PaymentService paymentService;
 
-    @PostMapping("/order/{orderId}")
-    public ResponseEntity<PaymentResponse> processPayment(
-            @PathVariable Long orderId,
-            @RequestParam String paymentMethod) {
-        return ResponseEntity.ok(paymentService.processPayment(orderId, paymentMethod));
+    @PostMapping
+    public ResponseEntity<PaymentResponse> createPayment(
+            @Valid @RequestBody CreatePaymentRequest request) {
+
+        return ResponseEntity.ok(
+                paymentService.createPayment(request));
     }
 
-    @GetMapping("/order/{orderId}")
-    public ResponseEntity<List<PaymentResponse>> getPaymentsByOrder(@PathVariable Long orderId) {
-        return ResponseEntity.ok(paymentService.getPaymentsByOrder(orderId));
+    @PostMapping("/callback")
+    public ResponseEntity<Void> handleCallback(
+            HttpServletRequest request) {
+
+        paymentService.handleCallback(request);
+        return ResponseEntity.ok().build();
     }
+
 }

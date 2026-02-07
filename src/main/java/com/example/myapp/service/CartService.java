@@ -12,4 +12,11 @@ public interface CartService {
     // List<CartItemResponse> getMyCart();
 
     CartResponse getMyCart();
+
+    void updateQuantity(Long bookId, int quantity);
+
+    void clearCart();
+
+    void checkout();
+
 }

@@ -1,5 +1,5 @@
 package com.example.myapp.service;
 
-public class CartItemResponse {
+public class AdminDiscountService {
 
 }

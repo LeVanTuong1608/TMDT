@@ -13,4 +13,6 @@ public interface BookService {
 
     PageResponse<BookResponse> searchBooks(String keyword, int page, int size);
 
+    BookResponse getBookById(Long id);
+
 }
