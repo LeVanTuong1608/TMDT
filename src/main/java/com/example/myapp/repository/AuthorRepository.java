@@ -1,12 +1,15 @@
 package com.example.myapp.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
-import com.example.myapp.entity.*;
+import com.example.myapp.entity.Author;
+// import com.example.myapp.entity.Book;
 
-@Repository
 public interface AuthorRepository extends JpaRepository<Author, Long> {
+    boolean existsByName(String name);
 
-    boolean existsByAuthorName(String authorName);
+    Page<Author> findByNameContaining(String keyword, Pageable pageable);
+
 }

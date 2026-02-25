@@ -20,22 +20,22 @@ import java.util.List;
 @PreAuthorize("hasRole('USER')")
 public class PaymentController {
 
-    private final PaymentService paymentService;
+    // private final PaymentService paymentService;
 
-    @PostMapping
-    public ResponseEntity<PaymentResponse> createPayment(
-            @Valid @RequestBody CreatePaymentRequest request) {
+    // @PostMapping
+    // public ResponseEntity<PaymentResponse> createPayment(
+    //         @Valid @RequestBody CreatePaymentRequest request) {
 
-        return ResponseEntity.ok(
-                paymentService.createPayment(request));
-    }
+    //     return ResponseEntity.ok(
+    //             paymentService.createPayment(request));
+    // }
 
-    @PostMapping("/callback")
-    public ResponseEntity<Void> handleCallback(
-            HttpServletRequest request) {
+    // @PostMapping("/callback")
+    // public ResponseEntity<Void> handleCallback(
+    //         HttpServletRequest request) {
 
-        paymentService.handleCallback(request);
-        return ResponseEntity.ok().build();
-    }
+    //     paymentService.handleCallback(request);
+    //     return ResponseEntity.ok().build();
+    // }
 
 }

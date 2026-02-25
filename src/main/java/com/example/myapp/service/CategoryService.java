@@ -1,5 +1,10 @@
 package com.example.myapp.service;
 
-public class CategoryService {
+import java.util.List;
+
+import com.example.myapp.model.response.CategoryResponse;
+
+public interface CategoryService {
+    List<CategoryResponse> getAll();
 
 }

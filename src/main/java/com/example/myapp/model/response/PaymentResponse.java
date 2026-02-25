@@ -18,5 +18,6 @@ public class PaymentResponse {
     private BigDecimal amount;
     private String paymentMethod;
     private String status;
+    private String qrCode;
     private LocalDateTime paymentDate;
 }

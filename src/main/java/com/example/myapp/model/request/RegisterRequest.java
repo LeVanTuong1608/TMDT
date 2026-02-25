@@ -15,6 +15,6 @@ import lombok.experimental.FieldDefaults;
 public class RegisterRequest {
     String email;
     String password;
-    String fulltName;
+    String fullName;
     String phone;
 }

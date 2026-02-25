@@ -87,8 +87,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.example.myapp.entity.Book;
 import com.example.myapp.entity.Cart;
 import com.example.myapp.entity.CartItem;
@@ -184,5 +182,23 @@ public class CartServiceImpl implements CartService {
 
                 List<CartItem> cartItems = cartItemRepository.findByCart(cart);
                 return cartMapper.toResponse(cart, cartItems);
+        }
+
+        @Override
+        public void updateQuantity(Long bookId, int quantity) {
+                // TODO Auto-generated method stub
+                throw new UnsupportedOperationException("Unimplemented method 'updateQuantity'");
+        }
+
+        @Override
+        public void clearCart() {
+                // TODO Auto-generated method stub
+                throw new UnsupportedOperationException("Unimplemented method 'clearCart'");
+        }
+
+        @Override
+        public void checkout() {
+                // TODO Auto-generated method stub
+                throw new UnsupportedOperationException("Unimplemented method 'checkout'");
         }
 }

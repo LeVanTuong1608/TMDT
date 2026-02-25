@@ -65,12 +65,12 @@ public class AdminAuthorController {
     }
 
     // ================= DETAIL =================
-    @GetMapping("/{id}")
-    @Operation(summary = "Get detail of author")
-    public ResponseEntity<AuthorResponse> getDetail(@PathVariable Long id) {
-        AuthorResponse response = adminAuthorService.getDetail(id);
-        return ResponseEntity.ok(response);
-    }
+    // @GetMapping("/{id}")
+    // @Operation(summary = "Get detail of author")
+    // public ResponseEntity<AuthorResponse> getDetail(@PathVariable Long id) {
+    //     AuthorResponse response = adminAuthorService.getDetail(id);
+    //     return ResponseEntity.ok(response);
+    // }
 
     // ================= SEARCH =================
     @GetMapping("/search")

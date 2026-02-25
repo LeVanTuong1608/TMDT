@@ -27,10 +27,14 @@ public class BookMapper {
 
                 // flatten object
                 // .categoryId(book.getCategory().getId())
-                .categoryName(book.getCategory().getCategoryName())
+                .categoryName(book.getCategory() != null
+                        ? book.getCategory().getCategoryName()
+                        : null)
 
                 // .authorId(book.getAuthor().getId())
-                .authorName(book.getAuthor().getAuthorName())
+                .authorName(book.getAuthor() != null
+                        ? book.getAuthor().getName()
+                        : null)
                 .build();
     }
 }

@@ -37,33 +37,34 @@ public class AdminOrderController {
     }
 
     // ================= CREATE =================
-    @PostMapping
-    @Operation(summary = "Create new order")
-    public ResponseEntity<OrderResponse> createOrder(
-            @Valid @RequestBody OrderRequest request) {
+    // @PostMapping
+    // @Operation(summary = "Create new order")
+    // public ResponseEntity<OrderResponse> createOrder(
+    // @Valid @RequestBody OrderRequest request) {
 
-        OrderResponse response = adminOrderService.createOrder(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
-    }
+    // OrderResponse response = adminOrderService.createOrder(request);
+    // return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    // }
 
     // ================= UPDATE =================
     @PutMapping("/{id}")
-    @Operation(summary = "Update order")
-    public ResponseEntity<OrderResponse> updateOrder(
+    @Operation(summary = "Update status order")
+    public ResponseEntity<OrderResponse> updateOrderstatus(
             @PathVariable Long id,
             @Valid @RequestBody OrderRequest request) {
 
-        OrderResponse response = adminOrderService.updateOrder(id, request);
+        OrderResponse response = adminOrderService.updateOrderStatus(id, request.getStatus());
+
         return ResponseEntity.ok(response);
     }
 
     // ================= DELETE =================
-    @DeleteMapping("/{id}")
-    @Operation(summary = "Delete order")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        adminOrderService.deleteOrder(id);
-        return ResponseEntity.noContent().build();
-    }
+    // @DeleteMapping("/{id}")
+    // @Operation(summary = "Delete order")
+    // public ResponseEntity<Void> delete(@PathVariable Long id) {
+    // adminOrderService.deleteOrder(id);
+    // return ResponseEntity.noContent().build();
+    // }
 
     // ================= DETAIL =================
     @GetMapping("/{id}")

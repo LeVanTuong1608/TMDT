@@ -17,25 +17,20 @@ import com.example.myapp.util.*;
 import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
     private final CategoryRepository categoryRepository;
     private final AuthorRepository authorRepository;
-
-    public BookServiceImpl(BookRepository bookRepository,
-            CategoryRepository categoryRepository,
-            AuthorRepository authorRepository) {
-        this.bookRepository = bookRepository;
-        this.categoryRepository = categoryRepository;
-        this.authorRepository = authorRepository;
-    }
+    private final PageMapper pageMapper;
+    private final BookMapper bookMapper;
 
     @Override
     public PageResponse<BookResponse> getBooks(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Book> bookPage = bookRepository.findAll(pageable);
-        return PageMapper.toBookPageResponse(bookPage);
+        return pageMapper.toPageResponse(bookPage, bookMapper::toResponse);
     }
 
     @Override
@@ -46,7 +41,7 @@ public class BookServiceImpl implements BookService {
 
         Pageable pageable = PageRequest.of(page, size);
         Page<Book> bookPage = bookRepository.findByCategory_Id(categoryId, pageable);
-        return PageMapper.toBookPageResponse(bookPage);
+        return pageMapper.toPageResponse(bookPage, bookMapper::toResponse);
     }
 
     @Override
@@ -57,33 +52,20 @@ public class BookServiceImpl implements BookService {
 
         Pageable pageable = PageRequest.of(page, size);
         Page<Book> bookPage = bookRepository.findByAuthor_Id(authorId, pageable);
-        return PageMapper.toBookPageResponse(bookPage);
+        return pageMapper.toPageResponse(bookPage, bookMapper::toResponse);
     }
 
     @Override
     public PageResponse<BookResponse> searchBooks(String keyword, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Book> bookPage = bookRepository.findByTitleContaining(keyword, pageable);
-        return PageMapper.toBookPageResponse(bookPage);
+        return pageMapper.toPageResponse(bookPage, bookMapper::toResponse);
     }
 
     @Override
     public BookResponse getDetail(Long id) {
         Book book = bookRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.BOOK_NOT_FOUND));
-        return BookMapper.toResponse(book);
+        return bookMapper.toResponse(book);
     }
-
-    /* ================== MAPPER ================== */
-
-    // private BookResponse toResponse(Book book) {
-    // return BookResponse.builder()
-    // .id(book.getId())
-    // .title(book.getTitle())
-    // .imageUrl(book.getImageUrl())
-    // .price(book.getPrice())
-    // .categoryName(book.getCategory().getCategoryName())
-    // .authorName(book.getAuthor().getAuthorName())
-    // .build();
-    // }
 }

@@ -1,5 +1,11 @@
 package com.example.myapp.model.response;
 
-public class CategoryResponse {
+import lombok.Builder;
+import lombok.Getter;
 
+@Getter
+@Builder
+public class CategoryResponse {
+    private Long id;
+    private String categoryName;
 }

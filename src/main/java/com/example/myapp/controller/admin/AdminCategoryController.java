@@ -1,5 +1,6 @@
 package com.example.myapp.controller.admin;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -59,17 +60,17 @@ public class AdminCategoryController {
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete category")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        adminCategoryService.deleteCategory(id);
-        return ResponseEntity.noContent().build();
+    adminCategoryService.deleteCategory(id);
+    return ResponseEntity.noContent().build();
     }
 
     // ================= DETAIL =================
-    @GetMapping("/{id}")
-    @Operation(summary = "Get detail of category")
-    public ResponseEntity<CategoryResponse> getDetail(@PathVariable Long id) {
-        CategoryResponse response = adminCategoryService.getDetail(id);
-        return ResponseEntity.ok(response);
-    }
+    // @GetMapping("/{id}")
+    // @Operation(summary = "Get detail of category")
+    // public ResponseEntity<CategoryResponse> getDetail(@PathVariable Long id) {
+    // CategoryResponse response = adminCategoryService.getDetail(id);
+    // return ResponseEntity.ok(response);
+    // }
 
     // ================= SEARCH =================
     @GetMapping("/search")

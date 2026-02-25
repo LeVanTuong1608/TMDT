@@ -1,18 +1,14 @@
 package com.example.myapp.model.response;
 
-import java.time.LocalDate;
-
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
-@Setter
 @Builder
-public class AuthorResponse {
+public class PermissionResponse {
     private Long id;
     private String name;
-    private LocalDate birth;
-    // private String imageUrl;
-
+    private String description;
+    private String createdAt;
+    private String updatedAt;
 }

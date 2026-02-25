@@ -4,7 +4,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 import lombok.NoArgsConstructor;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
@@ -18,16 +20,17 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Author {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "author_id")
-    private Long id;
+    Long id;
 
     @Column(name = "author_name", nullable = false, unique = true)
-    private String authorName;
+    String name;
 
     @Column(name = "date_of_birth")
-    private LocalDate dateOfBirth;
+    LocalDate birth;
 }

@@ -13,6 +13,8 @@ import com.example.myapp.entity.PasswordResetToken;
 import com.example.myapp.entity.RefreshToken;
 import com.example.myapp.entity.Role;
 import com.example.myapp.entity.User;
+import com.example.myapp.exception.AppException;
+import com.example.myapp.exception.ErrorCode;
 import com.example.myapp.exception.InvalidCredentialsException;
 import com.example.myapp.exception.InvalidRefreshTokenException;
 import com.example.myapp.exception.InvalidTokenException;
@@ -23,12 +25,14 @@ import com.example.myapp.model.request.LoginRequest;
 import com.example.myapp.model.request.RefreshTokenRequest;
 import com.example.myapp.model.request.RegisterRequest;
 import com.example.myapp.model.request.ResetPasswordRequest;
+import com.example.myapp.model.request.UpdateUserRequest;
 import com.example.myapp.model.response.LoginResponse;
 import com.example.myapp.model.response.RefreshTokenResponse;
+import com.example.myapp.model.response.UserResponse;
 import com.example.myapp.repository.PasswordResetTokenRepository;
 import com.example.myapp.repository.RefreshTokenRepository;
 import com.example.myapp.repository.RoleRepository;
-import com.example.myapp.repository.UserfrofileRepository;
+import com.example.myapp.repository.UserRepository;
 import com.example.myapp.security.JwtService;
 import com.example.myapp.service.AuthService;
 import com.example.myapp.service.EmailService;
@@ -41,7 +45,7 @@ import lombok.experimental.FieldDefaults;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AuthServiceImpl implements AuthService {
-        final UserfrofileRepository userRepository;
+        final UserRepository userRepository;
         final RefreshTokenRepository refreshTokenRepository;
         final PasswordEncoder passwordEncoder;
         final JwtService jwtService;
@@ -53,16 +57,17 @@ public class AuthServiceImpl implements AuthService {
         public void registerUser(RegisterRequest request) {
 
                 if (userRepository.existsByEmail(request.getEmail())) {
-                        throw new UserAlreadyExistsException();
+                        throw new AppException(ErrorCode.EMAIL_EXITS);
                 }
 
-                Role roleUser = roleRepository.findById("USER")
-                                .orElseThrow(() -> new RuntimeException("Role USER chưa tồn tại"));
+                Role roleUser = roleRepository.findById("ROLE_USER")
+                                .orElseThrow(() -> new AppException(ErrorCode.ROLE_NOT_FOUND));
 
                 User user = User.builder()
                                 .email(request.getEmail())
                                 .password(passwordEncoder.encode(request.getPassword()))
-                                .fullName(request.getFulltName())
+                                .fullName(request.getFullName())
+                                .phone(request.getPhone())
                                 .roles(Set.of(roleUser))
                                 .build();
 
@@ -171,6 +176,42 @@ public class AuthServiceImpl implements AuthService {
                 userRepository.save(user);
 
                 resetTokenRepository.delete(token);
+        }
+
+        @Override
+        public void logout(RefreshTokenRequest request) {
+                // TODO Auto-generated method stub
+                throw new UnsupportedOperationException("Unimplemented method 'logout'");
+        }
+
+        @Override
+        public void verifyEmail(String token) {
+                // TODO Auto-generated method stub
+                throw new UnsupportedOperationException("Unimplemented method 'verifyEmail'");
+        }
+
+        @Override
+        public void resendVerificationEmail(String email) {
+                // TODO Auto-generated method stub
+                throw new UnsupportedOperationException("Unimplemented method 'resendVerificationEmail'");
+        }
+
+        @Override
+        public void changePassword(String oldPassword, String newPassword) {
+                // TODO Auto-generated method stub
+                throw new UnsupportedOperationException("Unimplemented method 'changePassword'");
+        }
+
+        @Override
+        public UserResponse getMyProfile() {
+                // TODO Auto-generated method stub
+                throw new UnsupportedOperationException("Unimplemented method 'getMyProfile'");
+        }
+
+        @Override
+        public UserResponse updateMyProfile(UpdateUserRequest request) {
+                // TODO Auto-generated method stub
+                throw new UnsupportedOperationException("Unimplemented method 'updateMyProfile'");
         }
 
 }

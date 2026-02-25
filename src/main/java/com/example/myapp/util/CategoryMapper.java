@@ -10,7 +10,7 @@ public class CategoryMapper {
 
     public CategoryResponse toResponse(Category category) {
         return CategoryResponse.builder()
-                .categoryId(category.getId())
+                .id(category.getId())
                 .categoryName(category.getCategoryName())
                 .build();
     }

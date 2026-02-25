@@ -3,7 +3,7 @@ package com.example.myapp.service.impl;
 import com.example.myapp.entity.Author;
 import com.example.myapp.entity.Book;
 import com.example.myapp.entity.Category;
-import com.example.myapp.exception.ResourceNotFoundException;
+import com.example.myapp.exception.*;
 import com.example.myapp.model.request.BookRequest;
 import com.example.myapp.model.response.BookResponse;
 import com.example.myapp.model.response.PageResponse;
@@ -26,20 +26,23 @@ public class AdminBookServiceImpl implements AdminBookService {
         private final BookRepository bookRepository;
         private final AuthorRepository authorRepository;
         private final CategoryRepository categoryRepository;
+        private final BookMapper bookMapper;
+        private final PageMapper pageMapper;
 
         @Override
         public PageResponse<BookResponse> getBooks(int page, int size) {
                 Pageable pageable = PageRequest.of(page, size);
                 Page<Book> bookPage = bookRepository.findAll(pageable);
-                return PageMapper.toPageResponse(bookPage, BookMapper::toResponse);
+                return pageMapper.toPageResponse(bookPage, bookMapper::toResponse);
         }
 
+        // tạo mới sách
         @Override
         public BookResponse createBook(BookRequest request) {
                 Author author = authorRepository.findById(request.getAuthorId())
-                                .orElseThrow(() -> new IllegalArgumentException("Author not found"));
+                                .orElseThrow(() -> new AppException(ErrorCode.AUTHOR_NOT_FOUND));
                 Category category = categoryRepository.findById(request.getCategoryId())
-                                .orElseThrow(() -> new IllegalArgumentException("Category not found"));
+                                .orElseThrow(() -> new AppException(ErrorCode.CATEGORY_NOT_FOUND));
 
                 Book book = new Book();
                 book.setTitle(request.getTitle());
@@ -53,18 +56,18 @@ public class AdminBookServiceImpl implements AdminBookService {
                 book.setCategory(category);
 
                 book = bookRepository.save(book);
-                return BookMapper.toResponse(book);
+                return bookMapper.toResponse(book);
         }
 
         @Override
         public BookResponse updateBook(Long bookId, BookRequest request) {
                 Book book = bookRepository.findById(bookId)
-                                .orElseThrow(() -> new IllegalArgumentException("Book not found"));
+                                .orElseThrow(() -> new AppException(ErrorCode.BOOK_NOT_FOUND));
 
                 Author author = authorRepository.findById(request.getAuthorId())
-                                .orElseThrow(() -> new IllegalArgumentException("Author not found"));
+                                .orElseThrow(() -> new AppException(ErrorCode.AUTHOR_NOT_FOUND));
                 Category category = categoryRepository.findById(request.getCategoryId())
-                                .orElseThrow(() -> new IllegalArgumentException("Category not found"));
+                                .orElseThrow(() -> new AppException(ErrorCode.CATEGORY_NOT_FOUND));
 
                 book.setTitle(request.getTitle());
                 book.setDescription(request.getDescription());
@@ -77,13 +80,13 @@ public class AdminBookServiceImpl implements AdminBookService {
                 book.setCategory(category);
 
                 book = bookRepository.save(book);
-                return BookMapper.toResponse(book);
+                return bookMapper.toResponse(book);
         }
 
         @Override
         public void deleteBook(Long bookId) {
                 Book book = bookRepository.findById(bookId)
-                                .orElseThrow(() -> new IllegalArgumentException("Book not found"));
+                                .orElseThrow(() -> new AppException(ErrorCode.BOOK_NOT_FOUND));
                 bookRepository.delete(book);
         }
 
@@ -91,6 +94,13 @@ public class AdminBookServiceImpl implements AdminBookService {
         public PageResponse<BookResponse> searchBooks(String keyword, int page, int size) {
                 Pageable pageable = PageRequest.of(page, size);
                 Page<Book> bookPage = bookRepository.findByTitleContaining(keyword, pageable);
-                return PageMapper.toBookPageResponse(bookPage);
+                return pageMapper.toPageResponse(bookPage, bookMapper::toResponse);
+        }
+
+        @Override
+        public BookResponse getDetail(Long id) {
+                Book book = bookRepository.findById(id)
+                                .orElseThrow(() -> new AppException(ErrorCode.BOOK_NOT_FOUND));
+                return bookMapper.toResponse(book);
         }
 }

@@ -22,13 +22,13 @@ public class OrderController {
 
     private final OrderService orderService;
 
-    @PostMapping
-    public ResponseEntity<OrderResponse> createOrder(
-            @Valid @RequestBody CreateOrderRequest request) {
+    // @PostMapping
+    // public ResponseEntity<OrderResponse> createOrder(
+    // @Valid @RequestBody CreateOrderRequest request) {
 
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(orderService.createOrder(request));
-    }
+    // return ResponseEntity.status(HttpStatus.CREATED)
+    // .body(orderService.createOrder(request));
+    // }
 
     @GetMapping("/my")
     public ResponseEntity<List<OrderResponse>> getMyOrders() {

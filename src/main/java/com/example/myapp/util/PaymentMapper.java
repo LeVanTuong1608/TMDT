@@ -11,7 +11,7 @@ public class PaymentMapper {
     public PaymentResponse toResponse(Payment payment) {
 
         return PaymentResponse.builder()
-                .paymentId(payment.getId())
+                .id(payment.getId())
                 .orderId(payment.getOrder().getId())
                 .amount(payment.getAmount())
                 .status(payment.getStatus())

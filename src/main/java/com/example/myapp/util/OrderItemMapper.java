@@ -11,7 +11,7 @@ public class OrderItemMapper {
     public OrderItemResponse toResponse(OrderItem item) {
 
         return OrderItemResponse.builder()
-                .orderItemId(item.getId())
+                .id(item.getId())
                 .bookId(item.getBook().getId())
                 .bookTitle(item.getBook().getTitle())
                 .quantity(item.getQuantity())

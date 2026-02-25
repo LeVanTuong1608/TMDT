@@ -25,7 +25,7 @@ public class OrderServiceImpl implements OrderService {
         private final CartRepository cartRepository;
         private final CartItemRepository cartItemRepository;
         private final OrderItemRepository orderItemRepository;
-        private final UserfrofileRepository userRepository;
+        private final UserRepository userRepository;
 
         @Override
         public OrderResponse placeOrder() {
@@ -40,7 +40,7 @@ public class OrderServiceImpl implements OrderService {
 
                 List<CartItem> cartItems = cartItemRepository.findByCart(cart);
                 if (cartItems.isEmpty()) {
-                        throw new IllegalStateException("Cart is empty");
+                        throw new AppException(ErrorCode.CART_NOT_FOUND);
                 }
 
                 // Calculate total

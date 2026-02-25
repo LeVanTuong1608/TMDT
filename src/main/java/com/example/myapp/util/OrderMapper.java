@@ -20,7 +20,7 @@ public class OrderMapper {
     public OrderResponse toResponse(Order order, List<OrderItem> items) {
 
         return OrderResponse.builder()
-                .orderId(order.getId())
+                .id(order.getId())
                 .orderDate(order.getOrderDate())
                 .status(order.getStatus())
                 .totalAmount(order.getTotalAmount())

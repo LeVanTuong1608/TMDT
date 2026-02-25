@@ -24,11 +24,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AuthController {
-    AuthService authService;
+    final AuthService authService;
 
     @PostMapping("/register")
     public ResponseEntity<Void> registerUser(@Valid @RequestBody RegisterRequest request) {
@@ -54,18 +54,19 @@ public class AuthController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/forgot-password")
-    public ResponseEntity<Void> forgotPassword(@Valid @RequestBody String email) {
-        authService.forgotPassword(email);
-        return ResponseEntity.ok().build();
-    }
+    // @PostMapping("/forgot-password")
+    // public ResponseEntity<Void> forgotPassword(@Valid @RequestBody String email)
+    // {
+    // authService.forgotPassword(email);
+    // return ResponseEntity.ok().build();
+    // }
 
-    @PostMapping("/reset-password")
-    public ResponseEntity<Void> resetPassword(@Valid @RequestBody String token,
-            @Valid @RequestBody String newPassword) {
-        authService.resetPassword(token, newPassword);
-        return ResponseEntity.ok().build();
-    }
+    // @PostMapping("/reset-password")
+    // public ResponseEntity<Void> resetPassword(@Valid @RequestBody String token,
+    // @Valid @RequestBody String newPassword) {
+    // authService.resetPassword(token, newPassword);
+    // return ResponseEntity.ok().build();
+    // }
 
     @PostMapping("/verify-email")
     public ResponseEntity<Void> verifyEmail(@Valid @RequestBody String token) {
@@ -88,7 +89,7 @@ public class AuthController {
 
     @GetMapping("/me")
     public ResponseEntity<?> getMyProfile() {
-        return ResponseEntity.ok(authService.getMyProfile();
+        return ResponseEntity.ok(authService.getMyProfile());
     }
 
     @PutMapping("/me")

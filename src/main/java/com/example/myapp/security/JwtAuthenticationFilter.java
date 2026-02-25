@@ -23,7 +23,7 @@ import lombok.*;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
         private final JwtService jwtService;
-        private final UserfrofileRepository userRepository;
+        private final UserRepository userRepository;
 
         @Override
         protected void doFilterInternal(HttpServletRequest request,

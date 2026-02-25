@@ -12,6 +12,7 @@ public enum ErrorCode {
     INVALID_CREDENTIALS(HttpStatus.UNAUTHORIZED, "Invalid credentials"),
     TOKEN_INVALID(HttpStatus.UNAUTHORIZED, "Invalid token"),
     TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "Token expired"),
+    EMAIL_EXITS(HttpStatus.CONFLICT, "Email already exists"),
 
     // USER
     USER_EXISTED(HttpStatus.CONFLICT, "User already exists"),
@@ -26,6 +27,7 @@ public enum ErrorCode {
     AUTHOR_NOT_FOUND(HttpStatus.NOT_FOUND, "Author not found"),
     CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, "Category not found"),
 
+    // CART
     CART_NOT_FOUND(HttpStatus.NOT_FOUND, "Cart not found"),
     CART_ITEM_NOT_FOUND(HttpStatus.NOT_FOUND, "Cart item not found"),
 
@@ -49,7 +51,8 @@ public enum ErrorCode {
     ACTIVE_CART_NOT_FOUND(HttpStatus.NOT_FOUND, "Active cart not found"),
 
     // ORRDER
-    ORDER_NOT_FOUND(HttpStatus.NOT_FOUND, "Order not found");
+    ORDER_NOT_FOUND(HttpStatus.NOT_FOUND, "Order not found"),
+    ORDER_ITEM_NOT_FOUND(HttpStatus.NOT_FOUND, "Order item not found");
 
     private final HttpStatus status;
     private final String message;
