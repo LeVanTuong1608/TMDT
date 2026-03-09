@@ -1,18 +1,7 @@
 package com.example.myapp.service;
 
-import com.example.myapp.model.response.dashboard.*;
-
-import java.util.List;
+import com.example.myapp.model.response.DashboardSummaryResponse;
 
 public interface AdminDashboardService {
-
     DashboardSummaryResponse getSummary();
-
-    List<RevenueResponse> getRevenueByYear(int year);
-
-    List<RecentOrderResponse> getRecentOrders();
-
-    List<TopBookResponse> getTopBooks();
-
-    List<DashboardAlertResponse> getAlerts();
 }

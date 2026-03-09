@@ -7,8 +7,13 @@ import com.example.myapp.entity.Order;
 import com.example.myapp.entity.User;
 
 import java.util.List;
+import java.math.BigDecimal;
+import org.springframework.data.jpa.repository.Query;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> findByUser(User user);
+
+    @Query("select sum(o.totalAmount) from Order o")
+    BigDecimal sumTotalAmount();
 }

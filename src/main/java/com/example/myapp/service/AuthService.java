@@ -22,6 +22,8 @@ public interface AuthService {
 
     void registerUser(RegisterRequest request);
 
+    void registerUserAdmin(RegisterRequest request);
+
     RefreshTokenResponse refreshToken(RefreshTokenRequest request);
 
     void forgotPassword(ForgotPasswordRequest request);

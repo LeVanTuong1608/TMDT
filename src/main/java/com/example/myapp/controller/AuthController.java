@@ -3,6 +3,7 @@ package com.example.myapp.controller;
 import org.apache.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.myapp.model.request.ForgotPasswordRequest;
 import com.example.myapp.model.request.LoginRequest;
 import com.example.myapp.model.request.RefreshTokenRequest;
 import com.example.myapp.model.request.RegisterRequest;
@@ -37,6 +39,14 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.SC_CREATED).build();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/admin/register")
+    public ResponseEntity<Void> registerUserAdmin(@Valid @RequestBody RegisterRequest request) {
+
+        authService.registerUserAdmin(request);
+        return ResponseEntity.status(HttpStatus.SC_CREATED).build();
+    }
+
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody @Valid LoginRequest request) {
         return ResponseEntity.ok(authService.login(request));
@@ -54,12 +64,14 @@ public class AuthController {
         return ResponseEntity.ok().build();
     }
 
-    // @PostMapping("/forgot-password")
-    // public ResponseEntity<Void> forgotPassword(@Valid @RequestBody String email)
-    // {
-    // authService.forgotPassword(email);
-    // return ResponseEntity.ok().build();
-    // }
+    @PostMapping("/forgot-password")
+    @Transactional(rollbackFor = Exception.class)
+    public ResponseEntity<Void> forgotPassword(
+            @Valid @RequestBody ForgotPasswordRequest request) {
+
+        authService.forgotPassword(request);
+        return ResponseEntity.ok().build();
+    }
 
     // @PostMapping("/reset-password")
     // public ResponseEntity<Void> resetPassword(@Valid @RequestBody String token,

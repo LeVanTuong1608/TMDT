@@ -11,8 +11,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import com.example.myapp.entity.User;
 import com.example.myapp.exception.UserNotFoundException;
 import com.example.myapp.repository.*;
-
-import io.jsonwebtoken.io.IOException;
+import java.io.IOException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

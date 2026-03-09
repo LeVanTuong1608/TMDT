@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/categories")
+@RequestMapping("/api/users/categories")
 @RequiredArgsConstructor
 public class CategoryController {
 
@@ -21,4 +21,5 @@ public class CategoryController {
     public ResponseEntity<List<CategoryResponse>> getAll() {
         return ResponseEntity.ok(categoryService.getAll());
     }
+
 }

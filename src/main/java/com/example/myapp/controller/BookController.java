@@ -12,7 +12,7 @@ import jakarta.validation.constraints.*;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/books")
+@RequestMapping("/api/users/books")
 @RequiredArgsConstructor
 public class BookController {
 

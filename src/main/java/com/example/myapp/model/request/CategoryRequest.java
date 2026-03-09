@@ -9,7 +9,7 @@ import lombok.Setter;
 @Builder
 public class CategoryRequest {
 
-    private Long id;
+    // private Long id;
     private String categoryName;
 
 

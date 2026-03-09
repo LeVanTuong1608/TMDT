@@ -26,7 +26,7 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/api/admin/categories")
 @PreAuthorize("hasRole('ADMIN')")
-@Tag(name = "Admin - Categories")
+// @Tag(name = "Admin - Categories")
 @Validated
 public class AdminCategoryController {
     private final AdminCategoryService adminCategoryService;
@@ -60,8 +60,8 @@ public class AdminCategoryController {
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete category")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-    adminCategoryService.deleteCategory(id);
-    return ResponseEntity.noContent().build();
+        adminCategoryService.deleteCategory(id);
+        return ResponseEntity.noContent().build();
     }
 
     // ================= DETAIL =================

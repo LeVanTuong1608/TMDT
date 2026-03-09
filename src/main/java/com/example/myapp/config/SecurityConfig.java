@@ -30,39 +30,74 @@ public class SecurityConfig {
         return config.getAuthenticationManager();
     }
 
+    // @Bean
+    // public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    // http
+    // .csrf(csrf -> csrf.disable()) // Postman bắt buộc disable
+    // // ❌ JWT → không dùng session
+    // .sessionManagement(session ->
+    // session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+
+    // // ❌ Tắt cơ chế mặc định
+    // .formLogin(form -> form.disable())
+    // .httpBasic(basic -> basic.disable())
+
+    // // Thêm JWT filter
+    // .addFilterBefore(jwtAuthenticationFilter,
+    // UsernamePasswordAuthenticationFilter.class)
+
+    // .authorizeHttpRequests(auth -> auth
+    // // // Public APIs
+    // // .requestMatchers("/api/register", "/api/login").permitAll()
+    // // // Admin APIs - cần ROLE_ADMIN
+    // // .requestMatchers("/api/admin/**").hasAuthority("ADMIN")
+    // // // Protected APIs - cần authentication
+    // // .requestMatchers("/api/users/**").authenticated()
+    // // .anyRequest().authenticated());
+
+    // // =============================
+    // // Swagger
+    // // =============================
+    // .requestMatchers(
+    // "/v3/api-docs/**",
+    // "/swagger-ui/**",
+    // "/swagger-ui.html")
+    // .permitAll()
+    // .requestMatchers(
+    // "/api/auth/**")
+    // .permitAll()
+
+    // .requestMatchers("/api/admin/**")
+    // .hasAuthority("ADMIN")
+
+    // .requestMatchers("/api/users/**")
+    // .authenticated()
+
+    // .anyRequest().authenticated());
+    // return http.build();
+    // }
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable()) // Postman bắt buộc disable
-                // ❌ JWT → không dùng session
+                .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-
-                // ❌ Tắt cơ chế mặc định
                 .formLogin(form -> form.disable())
                 .httpBasic(basic -> basic.disable())
 
-                // Thêm JWT filter
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-
                 .authorizeHttpRequests(auth -> auth
-                        // // Public APIs
-                        // .requestMatchers("/api/register", "/api/login").permitAll()
-                        // // Admin APIs - cần ROLE_ADMIN
-                        // .requestMatchers("/api/admin/**").hasAuthority("ADMIN")
-                        // // Protected APIs - cần authentication
-                        // .requestMatchers("/api/users/**").authenticated()
-                        // .anyRequest().authenticated());
                         .requestMatchers(
-                                "/api/auth/**")
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html")
                         .permitAll()
+                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/admin/**").hasAuthority("ADMIN")
+                        .requestMatchers("/api/users/**").authenticated()
+                        .anyRequest().authenticated())
 
-                        .requestMatchers("/api/admin/**")
-                        .hasAuthority("ADMIN")
-
-                        .requestMatchers("/api/users/**")
-                        .authenticated()
-
-                        .anyRequest().authenticated());
+                // ✅ CHỈ GIỮ 1 LẦN Ở ĐÂY
+                .addFilterBefore(jwtAuthenticationFilter,
+                        UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

@@ -6,8 +6,11 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.myapp.entity.PasswordResetToken;
 import com.example.myapp.entity.RefreshToken;
@@ -61,6 +64,26 @@ public class AuthServiceImpl implements AuthService {
                 }
 
                 Role roleUser = roleRepository.findById("ROLE_USER")
+                                .orElseThrow(() -> new AppException(ErrorCode.ROLE_NOT_FOUND));
+
+                User user = User.builder()
+                                .email(request.getEmail())
+                                .password(passwordEncoder.encode(request.getPassword()))
+                                .fullName(request.getFullName())
+                                .phone(request.getPhone())
+                                .roles(Set.of(roleUser))
+                                .build();
+
+                userRepository.save(user);
+        }
+
+        @Override
+        public void registerUserAdmin(RegisterRequest request) {
+                if (userRepository.existsByEmail(request.getEmail())) {
+                        throw new AppException(ErrorCode.EMAIL_EXITS);
+                }
+
+                Role roleUser = roleRepository.findById("ROLE_ADMIN")
                                 .orElseThrow(() -> new AppException(ErrorCode.ROLE_NOT_FOUND));
 
                 User user = User.builder()
@@ -133,14 +156,41 @@ public class AuthServiceImpl implements AuthService {
                 return new RefreshTokenResponse(newAccessToken);
         }
 
+        // @Override
+        // @Transactional(rollbackFor = Exception.class)
+        // public void forgotPassword(ForgotPasswordRequest request) {
+
+        // User user = userRepository.findByEmail(request.getEmail())
+        // .orElseThrow(UserNotFoundException::new);
+
+        // // Xoá token cũ nếu có
+        // resetTokenRepository.deleteByUserId(user.getId());
+
+        // String token = UUID.randomUUID().toString();
+
+        // PasswordResetToken resetToken = PasswordResetToken.builder()
+        // .token(token)
+        // .user(user)
+        // .expiryTime(Instant.now().plus(15, ChronoUnit.MINUTES))
+        // .build();
+
+        // resetTokenRepository.save(resetToken);
+
+        // String resetLink = "http://localhost:3000/reset-password?token=" + token;
+
+        // emailService.send(
+        // user.getEmail(),
+        // "Reset your password",
+        // "Click here to reset password:\n" + resetLink);
+        // }
         @Override
+        @Transactional
         public void forgotPassword(ForgotPasswordRequest request) {
 
                 User user = userRepository.findByEmail(request.getEmail())
                                 .orElseThrow(UserNotFoundException::new);
 
-                // Xoá token cũ nếu có
-                resetTokenRepository.deleteByUserId(user.getId());
+                resetTokenRepository.deleteByUser_Id(user.getId());
 
                 String token = UUID.randomUUID().toString();
 
@@ -204,8 +254,20 @@ public class AuthServiceImpl implements AuthService {
 
         @Override
         public UserResponse getMyProfile() {
-                // TODO Auto-generated method stub
-                throw new UnsupportedOperationException("Unimplemented method 'getMyProfile'");
+
+                Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+                String email = authentication.getName();
+
+                User user = userRepository.findByEmail(email)
+                                .orElseThrow(UserNotFoundException::new);
+
+                return UserResponse.builder()
+                                .id(user.getId())
+                                .email(user.getEmail())
+                                .fullName(user.getFullName())
+                                // .roles(user.getRoles())
+                                .build();
         }
 
         @Override

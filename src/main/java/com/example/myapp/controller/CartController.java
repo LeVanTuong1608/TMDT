@@ -56,7 +56,7 @@ import com.example.myapp.service.CartService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/cart")
+@RequestMapping("/api/users/cart")
 @RequiredArgsConstructor
 @PreAuthorize("hasRole('USER')")
 

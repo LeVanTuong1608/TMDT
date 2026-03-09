@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @Builder
 public class AuthorRequest {
-    private Long id;
+    // private Long id;
     private String name;
     private LocalDate birth;
 }
