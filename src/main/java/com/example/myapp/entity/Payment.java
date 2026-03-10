@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,6 +20,7 @@ import java.time.LocalDateTime;
 @Table(name = "payments")
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Payment {
@@ -39,7 +41,9 @@ public class Payment {
     private BigDecimal amount;
 
     @Column(columnDefinition = "TEXT")
-    private String qrCode;
+    private String method;
+
+    private String transactionId;
 
     private String status;
 

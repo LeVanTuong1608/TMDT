@@ -52,6 +52,11 @@ public enum ErrorCode {
 
     // ORRDER
     ORDER_NOT_FOUND(HttpStatus.NOT_FOUND, "Order not found"),
+    ORDER_ALREADY_PAID(HttpStatus.BAD_REQUEST, "Order already paid"),
+    PAYMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "Payment not found"),
+    PAYMENT_FAILED(HttpStatus.BAD_REQUEST, "Payment failed"),
+
+    // ORDER ITEM
     ORDER_ITEM_NOT_FOUND(HttpStatus.NOT_FOUND, "Order item not found");
 
     private final HttpStatus status;

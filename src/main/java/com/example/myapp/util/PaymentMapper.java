@@ -11,12 +11,9 @@ public class PaymentMapper {
     public PaymentResponse toResponse(Payment payment) {
 
         return PaymentResponse.builder()
-                .id(payment.getId())
-                .orderId(payment.getOrder().getId())
-                .amount(payment.getAmount())
+                .paymentId(payment.getId())
                 .status(payment.getStatus())
-                .paymentDate(payment.getPaymentDate())
-                .qrCode(payment.getQrCode())
+                .message("payment completed")
                 .build();
     }
 }

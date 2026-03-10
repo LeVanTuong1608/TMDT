@@ -1,0 +1,354 @@
+# ======================================================
+# MYAPP BOOK STORE API - TEST SAMPLES FOR POSTMAN
+# ======================================================
+
+# BASE URL: http://localhost:8000
+# Lưu ý: Một số API yêu cầu đăng nhập và gửi token qua Cookie: JWT_TOKEN=<token>
+
+# ======================================================
+# 1. AUTH APIs (Authentication)
+# ======================================================
+
+# --- Register User ---
+POST /api/auth/register
+Content-Type: application/json
+Body:
+{
+  "email": "user@example.com",
+  "password": "123456",
+  "fullName": "Nguyễn Văn A",
+  "phone": "0987654321"
+}
+
+# --- Login ---
+POST /api/auth/login
+Content-Type: application/json
+Body:
+{
+  "email": "user@example.com",
+  "password": "123456"
+}
+
+# --- Get My Profile ---
+GET /api/auth/me
+Cookie: JWT_TOKEN=<token>
+
+# --- Update My Profile ---
+PUT /api/auth/me
+Content-Type: application/json
+Cookie: JWT_TOKEN=<token>
+Body:
+{
+  "fullName": "Nguyễn Văn B",
+  "phone": "0987654322",
+  "address": "TP.HCM"
+}
+
+# --- Refresh Token ---
+POST /api/auth/refresh
+Content-Type: application/json
+Body:
+{
+  "refreshToken": "<refresh_token>"
+}
+
+# --- Logout ---
+POST /api/auth/logout
+Content-Type: application/json
+Cookie: JWT_TOKEN=<token>
+Body:
+{
+  "refreshToken": "<refresh_token>"
+}
+
+# --- Forgot Password ---
+POST /api/auth/forgot-password
+Content-Type: application/json
+Body:
+{
+  "email": "user@example.com"
+}
+
+# --- Verify Email ---
+POST /api/auth/verify-email
+Content-Type: application/json
+Body:
+"<token>"
+
+# --- Resend Verification Email ---
+POST /api/auth/resend-verification-email
+Content-Type: application/json
+Body:
+"user@example.com"
+
+# ======================================================
+# 2. USER APIs (Public - Books & Categories)
+# ======================================================
+
+# --- Get All Categories ---
+GET /api/users/categories
+
+# --- Search Books ---
+GET /api/users/books?keyword=java&page=0&size=10
+
+# --- Get Book Detail ---
+GET /api/users/books/{id}
+
+
+# ======================================================
+# 3. COMMENT APIs (User - requires auth)
+# ======================================================
+
+# --- Get Comments by Book ---
+GET /api/book/{bookId}/comments
+
+# --- Create Comment ---
+POST /api/book/{bookId}/comments
+Content-Type: application/json
+Cookie: JWT_TOKEN=<token>
+Body:
+{
+  "content": "Sách rất hay, đáng đọc!"
+}
+
+# --- Delete Comment ---
+DELETE /api/book/{bookId}/comments/{commentId}
+Cookie: JWT_TOKEN=<token>
+
+
+# ======================================================
+# 4. CART APIs (User - requires auth)
+# ======================================================
+
+# --- Get My Cart ---
+GET /api/users/cart
+Cookie: JWT_TOKEN=<token>
+
+# --- Add to Cart ---
+POST /api/users/cart/add?bookId=1&quantity=2
+Cookie: JWT_TOKEN=<token>
+
+# --- Update Cart Quantity ---
+PUT /api/users/cart/update?bookId=1&quantity=3
+Cookie: JWT_TOKEN=<token>
+
+# --- Remove from Cart ---
+DELETE /api/users/cart/remove?bookId=1
+Cookie: JWT_TOKEN=<token>
+
+# --- Clear Cart ---
+DELETE /api/users/cart/clear
+Cookie: JWT_TOKEN=<token>
+
+# --- Checkout ---
+POST /api/users/cart/checkout
+Cookie: JWT_TOKEN=<token>
+
+
+# ======================================================
+# 5. ORDER APIs (User - requires auth)
+# ======================================================
+
+# --- Get My Orders ---
+GET /api/users/orders/my
+Cookie: JWT_TOKEN=<token>
+
+# --- Get Order By ID ---
+GET /api/users/orders/{id}
+Cookie: JWT_TOKEN=<token>
+
+
+# ======================================================
+# 6. PAYMENT APIs
+# ======================================================
+
+# --- Create Payment ---
+POST /api/payments
+Content-Type: application/json
+Body:
+{
+  "orderId": 1,
+  "paymentMethod": "VNPAY"
+}
+
+
+# ======================================================
+# 7. ADMIN APIs (requires ADMIN role)
+# ======================================================
+
+# --- Admin: Register New Admin User ---
+POST /api/auth/admin/register
+Content-Type: application/json
+Cookie: JWT_TOKEN=<admin_token>
+Body:
+{
+  "email": "admin@example.com",
+  "password": "admin123",
+  "fullName": "Admin User",
+  "phone": "0123456789"
+}
+
+# --- Admin: Search Users ---
+GET /api/admin/users/search?keyword=&page=0&size=10
+Cookie: JWT_TOKEN=<admin_token>
+
+# --- Admin: Search Books ---
+GET /api/admin/books/search?keyword=&page=0&size=10
+Cookie: JWT_TOKEN=<admin_token>
+
+# --- Admin: Create Book ---
+POST /api/admin/books
+Content-Type: application/json
+Cookie: JWT_TOKEN=<admin_token>
+Body:
+{
+  "title": "Java Programming",
+  "imageUrl": "https://example.com/image.jpg",
+  "price": 29.99,
+  "description": "Learn Java programming",
+  "publisher": "Tech Publisher",
+  "publicationYear": 2024,
+  "dimensions": "15x20",
+  "categoryId": 1,
+  "authorId": 1
+}
+
+# --- Admin: Update Book ---
+PUT /api/admin/books/{id}
+Content-Type: application/json
+Cookie: JWT_TOKEN=<admin_token>
+Body:
+{
+  "title": "Java Programming Updated",
+  "imageUrl": "https://example.com/image.jpg",
+  "price": 39.99,
+  "description": "Learn Java programming - Updated",
+  "publisher": "Tech Publisher",
+  "publicationYear": 2024,
+  "dimensions": "15x20",
+  "categoryId": 1,
+  "authorId": 1
+}
+
+# --- Admin: Delete Book ---
+DELETE /api/admin/books/{id}
+Cookie: JWT_TOKEN=<admin_token>
+
+# --- Admin: Get Book Detail ---
+GET /api/admin/books/{id}
+Cookie: JWT_TOKEN=<admin_token>
+
+# --- Admin: Search Categories ---
+GET /api/admin/categories/search?keyword=&page=0&size=10
+Cookie: JWT_TOKEN=<admin_token>
+
+# --- Admin: Create Category ---
+POST /api/admin/categories
+Content-Type: application/json
+Cookie: JWT_TOKEN=<admin_token>
+Body:
+{
+  "categoryName": "Technology"
+}
+
+# --- Admin: Update Category ---
+PUT /api/admin/categories/{id}
+Content-Type: application/json
+Cookie: JWT_TOKEN=<admin_token>
+Body:
+{
+  "categoryName": "Computer Science"
+}
+
+# --- Admin: Delete Category ---
+DELETE /api/admin/categories/{id}
+Cookie: JWT_TOKEN=<admin_token>
+
+# --- Admin: Search Authors ---
+GET /api/admin/authors/search?keyword=&page=0&size=10
+Cookie: JWT_TOKEN=<admin_token>
+
+# --- Admin: Create Author ---
+POST /api/admin/authors
+Content-Type: application/json
+Cookie: JWT_TOKEN=<admin_token>
+Body:
+{
+  "authorName": "John Doe",
+  "bio": "Famous author",
+  "imageUrl": "https://example.com/author.jpg"
+}
+
+# --- Admin: Update Author ---
+PUT /api/admin/authors/{id}
+Content-Type: application/json
+Cookie: JWT_TOKEN=<admin_token>
+Body:
+{
+  "authorName": "John Doe Updated",
+  "bio": "Updated bio",
+  "imageUrl": "https://example.com/author.jpg"
+}
+
+# --- Admin: Delete Author ---
+DELETE /api/admin/authors/{id}
+Cookie: JWT_TOKEN=<admin_token>
+
+# --- Admin: Search Orders ---
+GET /api/admin/orders/search?keyword=&page=0&size=10
+Cookie: JWT_TOKEN=<admin_token>
+
+# --- Admin: Get Order Detail ---
+GET /api/admin/orders/{id}
+Cookie: JWT_TOKEN=<admin_token>
+
+# --- Admin: Update Order Status ---
+PUT /api/admin/orders/{id}
+Content-Type: application/json
+Cookie: JWT_TOKEN=<admin_token>
+Body:
+{
+  "status": "COMPLETED"
+}
+
+# --- Admin: Dashboard Summary ---
+GET /api/admin/dashboard/summary
+Cookie: JWT_TOKEN=<admin_token>
+
+# --- Admin: Upload Image ---
+POST /api/uploads/images
+Content-Type: multipart/form-data
+Body: (file)
+
+
+# ======================================================
+# SAMPLE TEST DATA
+# ======================================================
+
+# User Credentials:
+#   Email: user@example.com
+#   Password: 123456
+
+# Admin Credentials:
+#   Email: admin@example.com
+#   Password: admin123
+
+# Book Sample:
+#   title: "Java Programming"
+#   price: 29.99
+#   categoryId: 1
+#   authorId: 1
+
+# Category Sample:
+#   categoryName: "Technology"
+
+# Author Sample:
+#   authorName: "John Doe"
+#   bio: "Famous author"
+
+# Order Status:
+#   PENDING, PROCESSING, SHIPPED, COMPLETED, CANCELLED
+
+# Payment Method:
+#   VNPAY, COD, BANK_TRANSFER
+

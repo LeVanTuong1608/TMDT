@@ -33,8 +33,13 @@
         },
         "url": {
           "raw": "{{baseUrl}}/api/register",
-          "host": ["{{baseUrl}}"],
-          "path": ["api", "register"]
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "register"
+          ]
         }
       }
     },
@@ -73,8 +78,13 @@
         },
         "url": {
           "raw": "{{baseUrl}}/api/login",
-          "host": ["{{baseUrl}}"],
-          "path": ["api", "login"]
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "login"
+          ]
         }
       }
     },
@@ -90,8 +100,14 @@
         ],
         "url": {
           "raw": "{{baseUrl}}/api/admin/users",
-          "host": ["{{baseUrl}}"],
-          "path": ["api", "admin", "users"]
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "admin",
+            "users"
+          ]
         }
       }
     },
@@ -115,8 +131,14 @@
         },
         "url": {
           "raw": "{{baseUrl}}/api/admin/users",
-          "host": ["{{baseUrl}}"],
-          "path": ["api", "admin", "users"]
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "admin",
+            "users"
+          ]
         }
       }
     },
@@ -140,8 +162,14 @@
         },
         "url": {
           "raw": "{{baseUrl}}/api/users/profile",
-          "host": ["{{baseUrl}}"],
-          "path": ["api", "users", "profile"]
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "users",
+            "profile"
+          ]
         }
       }
     },
@@ -165,8 +193,14 @@
         },
         "url": {
           "raw": "{{baseUrl}}/api/users/change-password",
-          "host": ["{{baseUrl}}"],
-          "path": ["api", "users", "change-password"]
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "users",
+            "change-password"
+          ]
         }
       }
     },
@@ -186,8 +220,14 @@
         },
         "url": {
           "raw": "{{baseUrl}}/api/users/profile",
-          "host": ["{{baseUrl}}"],
-          "path": ["api", "users", "profile"]
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "users",
+            "profile"
+          ]
         }
       }
     }

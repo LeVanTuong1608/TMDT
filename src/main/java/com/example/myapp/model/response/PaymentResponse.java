@@ -13,11 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PaymentResponse {
-    private Long id;
-    private Long orderId;
-    private BigDecimal amount;
-    private String paymentMethod;
+    private Long paymentId;
     private String status;
-    private String qrCode;
-    private LocalDateTime paymentDate;
+    private String message;
 }
