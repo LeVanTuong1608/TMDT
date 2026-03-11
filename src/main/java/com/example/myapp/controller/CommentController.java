@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/book/{id}/comments")
+@RequestMapping("/api/users/books/{bookId}/comments")
 @RequiredArgsConstructor
 public class CommentController {
 

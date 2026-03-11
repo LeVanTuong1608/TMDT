@@ -87,6 +87,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.example.myapp.entity.Book;
 import com.example.myapp.entity.Cart;
 import com.example.myapp.entity.CartItem;
@@ -102,6 +104,7 @@ import com.example.myapp.service.*;
 import com.example.myapp.util.CartMapper;
 
 @Service
+@Transactional
 public class CartServiceImpl implements CartService {
 
         private final CartRepository cartRepository;

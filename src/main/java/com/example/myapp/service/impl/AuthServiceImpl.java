@@ -2,6 +2,7 @@ package com.example.myapp.service.impl;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -183,31 +184,61 @@ public class AuthServiceImpl implements AuthService {
         // "Reset your password",
         // "Click here to reset password:\n" + resetLink);
         // }
-        @Override
+        // @Override
+        // @Transactional
+        // public void forgotPassword(ForgotPasswordRequest request) {
+
+        // User user = userRepository.findByEmail(request.getEmail())
+        // .orElseThrow(UserNotFoundException::new);
+
+        // resetTokenRepository.deleteByUser_Id(user.getId());
+
+        // String token = UUID.randomUUID().toString();
+
+        // PasswordResetToken resetToken = PasswordResetToken.builder()
+        // .token(token)
+        // .user(user)
+        // .expiryTime(Instant.now().plus(15, ChronoUnit.MINUTES))
+        // .build();
+
+        // resetTokenRepository.save(resetToken);
+
+        // String resetLink = "http://localhost:3000/reset-password?token=" + token;
+
+        // emailService.send(
+        // user.getEmail(),
+        // "Reset your password",
+        // "Click here to reset password:\n" + resetLink);
+        // }
         @Transactional
         public void forgotPassword(ForgotPasswordRequest request) {
 
-                User user = userRepository.findByEmail(request.getEmail())
-                                .orElseThrow(UserNotFoundException::new);
+                Optional<User> userOpt = userRepository.findByEmail(request.getEmail());
 
-                resetTokenRepository.deleteByUser_Id(user.getId());
+                if (userOpt.isPresent()) {
 
-                String token = UUID.randomUUID().toString();
+                        User user = userOpt.get();
 
-                PasswordResetToken resetToken = PasswordResetToken.builder()
-                                .token(token)
-                                .user(user)
-                                .expiryTime(Instant.now().plus(15, ChronoUnit.MINUTES))
-                                .build();
+                        resetTokenRepository.deleteByUser_Id(user.getId());
 
-                resetTokenRepository.save(resetToken);
+                        String token = UUID.randomUUID().toString();
 
-                String resetLink = "http://localhost:3000/reset-password?token=" + token;
+                        PasswordResetToken resetToken = PasswordResetToken.builder()
+                                        .token(token)
+                                        .user(user)
+                                        .expiryTime(Instant.now().plus(15, ChronoUnit.MINUTES))
+                                        .build();
 
-                emailService.send(
-                                user.getEmail(),
-                                "Reset your password",
-                                "Click here to reset password:\n" + resetLink);
+                        resetTokenRepository.save(resetToken);
+
+                        String resetLink = "http://localhost:3000/reset-password?token=" + token;
+
+                        emailService.send(
+                                        user.getEmail(),
+                                        "Reset your password",
+                                        "Click here:\n" + resetLink);
+                }
+
         }
 
         @Override

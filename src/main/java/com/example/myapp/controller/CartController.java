@@ -58,7 +58,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/users/cart")
 @RequiredArgsConstructor
-@PreAuthorize("hasRole('USER')")
+// @PreAuthorize("hasRole('USER')")
 
 public class CartController {
 
