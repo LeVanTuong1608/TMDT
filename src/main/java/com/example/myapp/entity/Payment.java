@@ -43,6 +43,7 @@ public class Payment {
     @Column(columnDefinition = "TEXT")
     private String method;
 
+    @Column(name = "transaction_id", unique = true)
     private String transactionId;
 
     private String status;

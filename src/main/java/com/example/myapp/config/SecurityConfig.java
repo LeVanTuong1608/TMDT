@@ -92,7 +92,15 @@ public class SecurityConfig {
                         .permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/admin/**").hasAuthority("ROLE_ADMIN")
-                        .requestMatchers("/api/users/**").authenticated()
+                        // Public endpoints - không cần đăng nhập
+                        .requestMatchers("/api/users/books/**").permitAll()
+                        .requestMatchers("/api/users/categories/**").permitAll()
+                        .requestMatchers("/api/users/authors/**").permitAll()
+
+                        .requestMatchers("/api/users/carts/**").authenticated()
+                        .requestMatchers("/api/users/orders/**").authenticated()
+                        .requestMatchers("/api/users/profile/**").authenticated()
+
                         .anyRequest().authenticated())
 
                 // ✅ CHỈ GIỮ 1 LẦN Ở ĐÂY
