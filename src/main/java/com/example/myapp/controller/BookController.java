@@ -18,7 +18,15 @@ public class BookController {
 
     private final BookService bookService;
 
-    @GetMapping
+    @GetMapping("/all")
+    public ResponseEntity<PageResponse<BookResponse>> getAllBooks(
+            @RequestParam(defaultValue = "0") @Min(0) int page,
+            @RequestParam(defaultValue = "10") @Min(1) @Max(100) int size) {
+        PageResponse<BookResponse> response = bookService.getBooks(page, size);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/search")
     public ResponseEntity<PageResponse<BookResponse>> search(
             @RequestParam(defaultValue = "") String keyword,
             @RequestParam(defaultValue = "0") @Min(0) int page,
