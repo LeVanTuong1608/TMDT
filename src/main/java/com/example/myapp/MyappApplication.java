@@ -23,18 +23,18 @@ public class MyappApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		// Initialize roles if not exist
-		if (roleRepository.findByName("ROLE_ADMIN").isEmpty()) {
-			Role adminRole = new Role();
-			adminRole.setName("ROLE_ADMIN");
-			adminRole.setDescription("Administrator role");
-			roleRepository.save(adminRole);
-		}
+		// if (roleRepository.findByName("ROLE_ADMIN").isEmpty()) {
+		// 	Role adminRole = new Role();
+		// 	adminRole.setName("ROLE_ADMIN");
+		// 	adminRole.setDescription("Administrator role");
+		// 	roleRepository.save(adminRole);
+		// }
 
-		if (roleRepository.findByName("ROLE_USER").isEmpty()) {
-			Role userRole = new Role();
-			userRole.setName("ROLE_USER");
-			userRole.setDescription("User role");
-			roleRepository.save(userRole);
-		}
+		// if (roleRepository.findByName("ROLE_USER").isEmpty()) {
+		// 	Role userRole = new Role();
+		// 	userRole.setName("ROLE_USER");
+		// 	userRole.setDescription("User role");
+		// 	roleRepository.save(userRole);
+		// }
 	}
 }

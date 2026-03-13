@@ -165,7 +165,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         protected void doFilterInternal(HttpServletRequest request,
                         HttpServletResponse response,
                         FilterChain filterChain)
-                        throws ServletException, IOException, java.io.IOException {
+                        throws ServletException, IOException {
 
                 String authHeader = request.getHeader("Authorization");
 
@@ -182,7 +182,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
                 List<SimpleGrantedAuthority> authorities = jwtService.extractRoles(token)
                                 .stream()
-                                .map(role -> new SimpleGrantedAuthority(role))
+                                // .map(role -> new SimpleGrantedAuthority(role))
+                                .map(SimpleGrantedAuthority::new)
                                 .toList();
 
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
