@@ -8,33 +8,49 @@ import com.example.myapp.model.response.BookResponse;
 @Component
 public class BookMapper {
 
-    // private BookMapper() {
-    // // utility class
-    // }
+        // private BookMapper() {
+        // // utility class
+        // }
 
-    public BookResponse toResponse(Book book) {
+        public BookResponse toResponse(Book book) {
 
-        return BookResponse.builder()
-                // .bookId(book.getId())
-                .id(book.getId())
-                .title(book.getTitle())
-                .imageUrl(book.getImageUrl())
-                .price(book.getPrice())
-                .description(book.getDescription())
-                .publisher(book.getPublisher())
-                .publicationYear(book.getPublicationYear())
-                .dimensions(book.getDimensions())
+                return BookResponse.builder()
+                                // .bookId(book.getId())
+                                .id(book.getId())
+                                .title(book.getTitle())
+                                .imageUrl(book.getImageUrl())
+                                .price(book.getPrice())
+                                .description(book.getDescription())
+                                .publisher(book.getPublisher())
+                                .publicationYear(book.getPublicationYear())
+                                .dimensions(book.getDimensions())
 
-                // flatten object
-                // .categoryId(book.getCategory().getId())
-                .categoryName(book.getCategory() != null
-                        ? book.getCategory().getCategoryName()
-                        : null)
+                                // flatten object
+                                // .categoryId(book.getCategory().getId())
+                                // .categoryName(book.getCategory() != null
+                                // ? book.getCategory().getCategoryName()
+                                // : null)
 
-                // .authorId(book.getAuthor().getId())
-                .authorName(book.getAuthor() != null
-                        ? book.getAuthor().getName()
-                        : null)
-                .build();
-    }
+                                // .authorId(book.getAuthor().getId())
+                                // .authorName(book.getAuthor() != null
+                                // ? book.getAuthor().getName()
+                                // : null)
+                                .categoryId(book.getCategory() != null
+                                                ? book.getCategory().getId()
+                                                : null)
+
+                                .categoryName(book.getCategory() != null
+                                                ? book.getCategory().getCategoryName()
+                                                : null)
+
+                                .authorId(book.getAuthor() != null
+                                                ? book.getAuthor().getId()
+                                                : null)
+
+                                .authorName(book.getAuthor() != null
+                                                ? book.getAuthor().getName()
+                                                : null)
+
+                                .build();
+        }
 }

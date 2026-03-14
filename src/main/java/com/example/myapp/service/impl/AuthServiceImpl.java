@@ -20,9 +20,9 @@ import com.example.myapp.entity.User;
 import com.example.myapp.exception.AppException;
 import com.example.myapp.exception.ErrorCode;
 import com.example.myapp.exception.InvalidCredentialsException;
+import com.example.myapp.exception.InvalidPasswordException;
 import com.example.myapp.exception.InvalidRefreshTokenException;
 import com.example.myapp.exception.InvalidTokenException;
-import com.example.myapp.exception.UserAlreadyExistsException;
 import com.example.myapp.exception.UserNotFoundException;
 import com.example.myapp.model.request.ForgotPasswordRequest;
 import com.example.myapp.model.request.LoginRequest;
@@ -40,6 +40,7 @@ import com.example.myapp.repository.UserRepository;
 import com.example.myapp.security.JwtService;
 import com.example.myapp.service.AuthService;
 import com.example.myapp.service.EmailService;
+import com.example.myapp.util.UserMapper;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -56,6 +57,7 @@ public class AuthServiceImpl implements AuthService {
         final RoleRepository roleRepository;
         final EmailService emailService;
         final PasswordResetTokenRepository resetTokenRepository;
+        final UserMapper userMapper;
 
         @Override
         public void registerUser(RegisterRequest request) {
@@ -101,25 +103,20 @@ public class AuthServiceImpl implements AuthService {
         @Override
         public LoginResponse login(LoginRequest request) {
 
-                // 1️⃣ Tìm user theo email
                 User user = userRepository.findByEmail(request.getEmail())
                                 .orElseThrow(UserNotFoundException::new);
 
-                // 2️⃣ Check password
                 if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
                         throw new InvalidCredentialsException();
                 }
 
-                // 3️⃣ Lấy roles
                 Set<String> roles = user.getRoles()
                                 .stream()
                                 .map(Role::getName)
                                 .collect(Collectors.toSet());
 
-                // 4️⃣ Generate JWT
                 String accessToken = jwtService.generateToken(user);
 
-                // 5️⃣ Tạo refresh token
                 RefreshToken refreshToken = RefreshToken.builder()
                                 .token(UUID.randomUUID().toString())
                                 .user(user)
@@ -128,7 +125,6 @@ public class AuthServiceImpl implements AuthService {
 
                 refreshTokenRepository.save(refreshToken);
 
-                // 6️⃣ Trả response
                 return LoginResponse.builder()
                                 .accessToken(accessToken)
                                 .refreshToken(refreshToken.getToken())
@@ -145,9 +141,6 @@ public class AuthServiceImpl implements AuthService {
                                 .findByToken(request.getToken())
                                 .orElseThrow(InvalidRefreshTokenException::new);
 
-                // if (token.getExpiryTime().isBefore(Instant.now())) {
-                // throw new InvalidRefreshTokenException();
-                // }
                 if (token.getExpiryTime().isBefore(Instant.now())) {
                         refreshTokenRepository.delete(token);
                         throw new InvalidRefreshTokenException();
@@ -157,59 +150,6 @@ public class AuthServiceImpl implements AuthService {
                 return new RefreshTokenResponse(newAccessToken);
         }
 
-        // @Override
-        // @Transactional(rollbackFor = Exception.class)
-        // public void forgotPassword(ForgotPasswordRequest request) {
-
-        // User user = userRepository.findByEmail(request.getEmail())
-        // .orElseThrow(UserNotFoundException::new);
-
-        // // Xoá token cũ nếu có
-        // resetTokenRepository.deleteByUserId(user.getId());
-
-        // String token = UUID.randomUUID().toString();
-
-        // PasswordResetToken resetToken = PasswordResetToken.builder()
-        // .token(token)
-        // .user(user)
-        // .expiryTime(Instant.now().plus(15, ChronoUnit.MINUTES))
-        // .build();
-
-        // resetTokenRepository.save(resetToken);
-
-        // String resetLink = "http://localhost:3000/reset-password?token=" + token;
-
-        // emailService.send(
-        // user.getEmail(),
-        // "Reset your password",
-        // "Click here to reset password:\n" + resetLink);
-        // }
-        // @Override
-        // @Transactional
-        // public void forgotPassword(ForgotPasswordRequest request) {
-
-        // User user = userRepository.findByEmail(request.getEmail())
-        // .orElseThrow(UserNotFoundException::new);
-
-        // resetTokenRepository.deleteByUser_Id(user.getId());
-
-        // String token = UUID.randomUUID().toString();
-
-        // PasswordResetToken resetToken = PasswordResetToken.builder()
-        // .token(token)
-        // .user(user)
-        // .expiryTime(Instant.now().plus(15, ChronoUnit.MINUTES))
-        // .build();
-
-        // resetTokenRepository.save(resetToken);
-
-        // String resetLink = "http://localhost:3000/reset-password?token=" + token;
-
-        // emailService.send(
-        // user.getEmail(),
-        // "Reset your password",
-        // "Click here to reset password:\n" + resetLink);
-        // }
         @Transactional
         public void forgotPassword(ForgotPasswordRequest request) {
 
@@ -261,50 +201,60 @@ public class AuthServiceImpl implements AuthService {
 
         @Override
         public void logout(RefreshTokenRequest request) {
-                // TODO Auto-generated method stub
-                throw new UnsupportedOperationException("Unimplemented method 'logout'");
+                RefreshToken token = refreshTokenRepository
+                                .findByToken(request.getToken())
+                                .orElseThrow(InvalidRefreshTokenException::new);
+
+                refreshTokenRepository.delete(token);
         }
 
         @Override
         public void verifyEmail(String token) {
-                // TODO Auto-generated method stub
-                throw new UnsupportedOperationException("Unimplemented method 'verifyEmail'");
+                // Dummy - implement email verification token logic if needed
         }
 
         @Override
         public void resendVerificationEmail(String email) {
-                // TODO Auto-generated method stub
-                throw new UnsupportedOperationException("Unimplemented method 'resendVerificationEmail'");
+                User user = userRepository.findByEmail(email)
+                                .orElseThrow(UserNotFoundException::new);
+                // emailService.sendVerificationEmail(user); // Uncomment when ready
         }
 
         @Override
         public void changePassword(String oldPassword, String newPassword) {
-                // TODO Auto-generated method stub
-                throw new UnsupportedOperationException("Unimplemented method 'changePassword'");
+                Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+                String username = auth.getName();
+                User user = userRepository.findByEmail(username)
+                                .orElseThrow(UserNotFoundException::new);
+                if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
+                        throw new InvalidPasswordException();
+                }
+                user.setPassword(passwordEncoder.encode(newPassword));
+                userRepository.save(user);
         }
 
         @Override
         public UserResponse getMyProfile() {
 
-                Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-                String email = authentication.getName();
-
-                User user = userRepository.findByEmail(email)
+                Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+                String username = auth.getName();
+                User user = userRepository.findByEmail(username)
                                 .orElseThrow(UserNotFoundException::new);
-
-                return UserResponse.builder()
-                                .id(user.getId())
-                                .email(user.getEmail())
-                                .fullName(user.getFullName())
-                                // .roles(user.getRoles())
-                                .build();
+                return userMapper.toResponse(user);
         }
 
         @Override
         public UserResponse updateMyProfile(UpdateUserRequest request) {
-                // TODO Auto-generated method stub
-                throw new UnsupportedOperationException("Unimplemented method 'updateMyProfile'");
+                Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+                String username = auth.getName();
+                User user = userRepository.findByEmail(username)
+                                .orElseThrow(UserNotFoundException::new);
+                user.setFullName(request.getFullName());
+                user.setPhone(request.getPhone());
+                user.setAddress(request.getAddress());
+                user.setImageUrl(request.getImageUrl());
+                user = userRepository.save(user);
+                return userMapper.toResponse(user);
         }
 
 }

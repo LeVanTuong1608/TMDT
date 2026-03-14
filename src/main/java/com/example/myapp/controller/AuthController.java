@@ -39,7 +39,7 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.SC_CREATED).build();
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/admin/register")
     public ResponseEntity<Void> registerUserAdmin(@Valid @RequestBody RegisterRequest request) {
 

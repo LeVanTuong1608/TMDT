@@ -18,11 +18,12 @@ import lombok.experimental.FieldDefaults;
 public class Role {
 
     @Id
-    @Column(nullable = false, length = 50)
-    String name; // ADMIN, USER, STAFF
+    @Column(name = "role_name", nullable = false, length = 50)
+    String name;
 
     String description;
 
     @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "role_permissions", joinColumns = @JoinColumn(name = "role_name"), inverseJoinColumns = @JoinColumn(name = "permission_name"))
     Set<Permission> permissions;
 }

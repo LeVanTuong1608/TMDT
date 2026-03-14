@@ -83,29 +83,29 @@ CREATE TABLE permissions (
 -- ROLE PERMISSIONS
 -- ============================================
 
-CREATE TABLE role_permissions (
-    role_name VARCHAR(50),
-    permission_name VARCHAR(50),
+-- CREATE TABLE role_permissions (
+--     role_name VARCHAR(50),
+--     permission_name VARCHAR(50),
 
-    PRIMARY KEY(role_name, permission_name),
+--     PRIMARY KEY(role_name, permission_name),
 
-    FOREIGN KEY (role_name) REFERENCES roles(role_name) ON DELETE CASCADE,
-    FOREIGN KEY (permission_name) REFERENCES permissions(permission_name) ON DELETE CASCADE
-);
+--     FOREIGN KEY (role_name) REFERENCES roles(role_name) ON DELETE CASCADE,
+--     FOREIGN KEY (permission_name) REFERENCES permissions(permission_name) ON DELETE CASCADE
+-- );
 
 -- ============================================
 -- USER ROLES
 -- ============================================
 
-CREATE TABLE user_roles (
-    user_id BIGINT,
-    role_name VARCHAR(50),
+-- CREATE TABLE users_roles (
+--     user_id BIGINT,
+--     role_name VARCHAR(50),
 
-    PRIMARY KEY(user_id, role_name),
+--     PRIMARY KEY(user_id, role_name),
 
-    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
-    FOREIGN KEY (role_name) REFERENCES roles(role_name) ON DELETE CASCADE
-);
+--     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+--     FOREIGN KEY (role_name) REFERENCES roles(role_name) ON DELETE CASCADE
+-- );
 
 -- ============================================
 -- CARTS
