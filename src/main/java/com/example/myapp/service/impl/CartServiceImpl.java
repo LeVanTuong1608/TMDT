@@ -148,7 +148,7 @@ public class CartServiceImpl implements CartService {
                 order.setUser(user);
                 order.setOrderDate(LocalDateTime.now());
                 order.setTotalAmount(totalAmount);
-                order.setStatus("PENDING");
+                order.setStatus("Pending");
 
                 Order savedOrder = orderRepository.save(order);
 

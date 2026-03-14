@@ -2,8 +2,8 @@
 -- BOOK STORE DATABASE (REFRACTOR VERSION)
 -- ============================================
 
-CREATE DATABASE book_store;
-USE book_store;
+-- CREATE DATABASE book_store;
+-- USE book_store;
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -314,6 +314,7 @@ INSERT INTO role_permissions VALUES
 ('ROLE_USER','READ_BOOK'),
 ('ROLE_USER','READ_ORDER'),
 ('ROLE_USER','WRITE_ORDER');
+-- Role.permissions auto-managed by JPA, table created auto
 INSERT INTO authors (author_name, date_of_birth) VALUES
 ('J.K. Rowling', '1965-07-31'),
 ('George Orwell', '1903-06-25'),
@@ -530,3 +531,22 @@ VALUES
 1949,
 '13 x 20 cm'
 );
+
+-- ============================================
+-- SAMPLE USERS FOR TESTING
+-- ============================================
+
+INSERT IGNORE INTO users (email, password, full_name) VALUES 
+('user@test.com', '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Test User');  -- password: 123456
+
+INSERT INTO users_roles (user_id, role_name) VALUES 
+((SELECT user_id FROM users WHERE email='user@test.com'), 'ROLE_USER');
+
+-- Uncomment if needed (auto-created by JPA)
+-- CREATE TABLE users_roles (
+--     user_id BIGINT,
+--     role_name VARCHAR(50),
+--     PRIMARY KEY(user_id, role_name),
+--     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+--     FOREIGN KEY (role_name) REFERENCES roles(role_name) ON DELETE CASCADE
+-- );

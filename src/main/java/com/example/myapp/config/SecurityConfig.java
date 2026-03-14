@@ -98,9 +98,9 @@ public class SecurityConfig {
                         .requestMatchers("/api/users/authors/**").permitAll()
 
                         .requestMatchers("/api/users/carts/**").authenticated()
+                        .requestMatchers("/api/auth/users/me").authenticated()
                         .requestMatchers("/api/users/orders/**").authenticated()
-                        .requestMatchers("/api/users/profile/**").authenticated()
-
+                        .requestMatchers("/api/users/orders/**").authenticated()
                         .anyRequest().authenticated())
 
                 // ✅ CHỈ GIỮ 1 LẦN Ở ĐÂY

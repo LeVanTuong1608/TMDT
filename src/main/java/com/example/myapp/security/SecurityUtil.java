@@ -7,7 +7,8 @@ import com.example.myapp.exception.UserNotFoundException;
 public class SecurityUtil {
 
     public static User getCurrentUser() {
-        Object principal = SecurityContextHolder.getContext()
+        Object principal = SecurityContextHolder
+                .getContext()
                 .getAuthentication()
                 .getPrincipal();
 

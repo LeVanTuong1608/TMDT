@@ -99,12 +99,12 @@ public class AuthController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/me")
+    @GetMapping("/users/me")
     public ResponseEntity<?> getMyProfile() {
         return ResponseEntity.ok(authService.getMyProfile());
     }
 
-    @PutMapping("/me")
+    @PutMapping("/users/me")
     public ResponseEntity<?> updateMyProfile(
             @RequestBody UpdateUserRequest request) {
         return ResponseEntity.ok(authService.updateMyProfile(request));
